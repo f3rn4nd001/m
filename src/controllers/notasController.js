@@ -2,7 +2,7 @@ const Modelnotas = require('../model/notasModel');
 const NotasController ={}
 
 NotasController.getNotas= async (req,res)=>{
-    const notas = await Modelnotas.find();
+    const notas = await Modelnotas.find().sort({ nombre: 'desc' });
     res.json(notas);
 
 }
@@ -35,12 +35,17 @@ NotasController.createtNotas= async (req,res)=>{
 
 
 NotasController.putNotas= async (req,res)=>{
-    const { nombre, nota, imagen } = req.body;
-    await Modelnotas.findByIdAndUpdate(req.body.id, { nombre, nota, imagen });
-    console.log(nota)
+    const {_id, nombre, nota, imagen } = req.body;
+     await Modelnotas.findByIdAndUpdate(req.body._id, { nombre, nota, imagen });
+    console.log({_id,nombre, nota, imagen});
     }
-    NotasController.deleteNotas= async (req,res)=>{
-      const nota = await Modelnotas.findByIdAndDelete(req.body.id);
-        console.log(nota);
+NotasController.deleteNotas= async (req,res)=>{
+    const  {id } = req.body;
+    console.log({id});      
+    await Modelnotas.findByIdAndDelete(req.body.id);
     }
+NotasController.getNota= async (req,res)=>{
+        const nota =await Modelnotas.findById(req.params.id);
+        res.json(nota);
+        }
 module.exports=NotasController;
